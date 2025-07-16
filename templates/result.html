@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}SMS Spam Detection Result{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+        <div class="card mb-4">
+            <div class="card-header d-flex align-items-center">
+                <i class="fas fa-sms text-primary me-2 fs-4"></i>
+                <h4 class="mb-0">Your Message</h4>
+            </div>
+            <div class="card-body">
+                <div class="p-3 bg-light rounded">
+                    <p class="mb-0" style="white-space: pre-wrap;">{{ message }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card {% if is_spam %}spam-result{% else %}ham-result{% endif %} position-relative overflow-hidden">
+            {% if is_spam %}
+                <div class="position-absolute" style="top: 0; right: 0; padding: 10px; opacity: 0.07;">
+                    <i class="fas fa-exclamation-triangle fa-10x text-danger"></i>
+                </div>
+            {% else %}
+                <div class="position-absolute" style="top: 0; right: 0; padding: 10px; opacity: 0.07;">
+                    <i class="fas fa-check-circle fa-10x text-success"></i>
+                </div>
+            {% endif %}
+            
+            <div class="card-header d-flex align-items-center">
+                <i class="fas fa-chart-pie text-primary me-2 fs-4"></i>
+                <h4 class="mb-0">Analysis Result</h4>
+            </div>
+            <div class="card-body py-4">
+                <div class="text-center mb-4">
+                    {% if is_spam %}
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle fa-3x text-danger"></i>
+                        </div>
+                        <h2 class="fw-bold text-danger">{{ prediction }}</h2>
+                    {% else %}
+                        <div class="mb-3">
+                            <i class="fas fa-check-circle fa-3x text-success"></i>
+                        </div>
+                        <h2 class="fw-bold text-success">{{ prediction }}</h2>
+                    {% endif %}
+                </div>
+                
+                <div class="d-flex justify-content-center mb-4">
+                    <div class="position-relative" style="width: 150px; height: 150px;">
+                        <div class="position-absolute top-50 start-50 translate-middle text-center">
+                            <h3 class="mb-0 fw-bold">{{ probability }}%</h3>
+                            <p class="mb-0 small text-muted">Confidence</p>
+                        </div>
+                        <svg width="150" height="150" viewBox="0 0 150 150">
+                            <circle cx="75" cy="75" r="60" fill="none" stroke="#e6e6e6" stroke-width="15"/>
+                            <circle cx="75" cy="75" r="60" fill="none" 
+                                stroke="{% if is_spam %}var(--danger-color){% else %}var(--success-color){% endif %}" 
+                                stroke-width="15"
+                                stroke-dasharray="377"
+                                stroke-dashoffset="{{ circle_offset }}"
+                                transform="rotate(-90 75 75)"
+                                style="transition: stroke-dashoffset 1s ease-in-out"
+                            />
+                        </svg>
+                    </div>
+                </div>
+                
+                {% if is_spam %}
+                <div class="alert alert-danger d-flex">
+                    <div class="me-3">
+                        <i class="fas fa-exclamation-circle fa-lg"></i>
+                    </div>
+                    <div>
+                        <strong>This message appears to be spam!</strong> 
+                        <p class="mb-0 mt-1">Be cautious with messages like this. They may contain phishing attempts, scams, or unwanted marketing.</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="alert alert-success d-flex">
+                    <div class="me-3">
+                        <i class="fas fa-shield-alt fa-lg"></i>
+                    </div>
+                    <div>
+                        <strong>This message appears to be legitimate.</strong>
+                        <p class="mb-0 mt-1">Our analysis indicates this is likely a normal, non-spam message.</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="mt-4 text-center">
+            <a href="/" class="btn btn-primary px-4">
+                <i class="fas fa-arrow-left me-2"></i>
+                Analyze Another Message
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

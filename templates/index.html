@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}SMS Spam Detector - Home{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                <i class="fas fa-comment-alt text-primary me-2 fs-4"></i>
+                <h4 class="mb-0">Analyze Message Content</h4>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-4">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Enter an SMS message below to check if it's spam or legitimate
+                </p>
+                
+                <form method="post" action="{% url 'spam_classifier:predict' %}">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label for="message" class="form-label fw-medium">
+                            <i class="fas fa-keyboard me-1 text-primary"></i>
+                            Enter your message:
+                        </label>
+                        <textarea 
+                            class="form-control shadow-sm" 
+                            id="message" 
+                            name="message" 
+                            rows="5" 
+                            placeholder="Paste your SMS message here..." 
+                            required
+                        ></textarea>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary px-4 py-2">
+                            <i class="fas fa-search me-2"></i>
+                            Analyze Message
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header d-flex align-items-center">
+                <i class="fas fa-question-circle text-primary me-2 fs-4"></i>
+                <h4 class="mb-0">How it works</h4>
+            </div>
+            <div class="card-body">
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="text-center mb-3">
+                            <i class="fas fa-paste text-primary fa-2x"></i>
+                        </div>
+                        <h5 class="text-center">Step 1</h5>
+                        <p class="text-center text-muted small">
+                            Paste your message into the text area above
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center mb-3">
+                            <i class="fas fa-cogs text-primary fa-2x"></i>
+                        </div>
+                        <h5 class="text-center">Step 2</h5>
+                        <p class="text-center text-muted small">
+                            Our AI analyzes the content for spam patterns
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center mb-3">
+                            <i class="fas fa-check-circle text-primary fa-2x"></i>
+                        </div>
+                        <h5 class="text-center">Step 3</h5>
+                        <p class="text-center text-muted small">
+                            Get instant results with confidence score
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
